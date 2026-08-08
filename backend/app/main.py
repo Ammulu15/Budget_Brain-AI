@@ -1,14 +1,25 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
-from app.models import user, transaction
-from app.api.routes import auth, transactions
+from app.models import user, transaction, budget, goal
+from app.api.routes import auth, transactions, budgets, goals
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="BudgetBrain AI")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(auth.router)
 app.include_router(transactions.router)
+app.include_router(budgets.router)
+app.include_router(goals.router)
 
 @app.get("/")
 def read_root():

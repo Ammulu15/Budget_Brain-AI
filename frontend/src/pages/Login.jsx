@@ -81,7 +81,11 @@ export default function Login() {
               placeholder="••••••••"
             />
           </div>
-
+          <div className="text-right -mt-2">
+  <Link to="/forgot-password" className="text-sm text-teal-deep hover:text-mauve">
+    Forgot password?
+  </Link>
+</div>
           {error && (
             <motion.p
               initial={{ opacity: 0 }}

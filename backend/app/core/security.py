@@ -44,3 +44,16 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_
     if user is None:
         raise credentials_exception
     return user
+    
+def create_reset_token(email: str) -> str:
+    expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    return jwt.encode({"sub": email, "purpose": "reset", "exp": expire}, settings.secret_key, algorithm=settings.algorithm)
+
+def verify_reset_token(token: str) -> str | None:
+    try:
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        if payload.get("purpose") != "reset":
+            return None
+        return payload.get("sub")
+    except JWTError:
+        return None

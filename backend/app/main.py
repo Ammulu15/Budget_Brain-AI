@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
 from app.models import user, transaction, budget, goal
-from app.api.routes import auth, transactions, budgets, goals
+from app.api.routes import auth, transactions, budgets, goals, ai
 
 Base.metadata.create_all(bind=engine)
 
@@ -20,6 +20,7 @@ app.include_router(auth.router)
 app.include_router(transactions.router)
 app.include_router(budgets.router)
 app.include_router(goals.router)
+app.include_router(ai.router)
 
 @app.get("/")
 def read_root():

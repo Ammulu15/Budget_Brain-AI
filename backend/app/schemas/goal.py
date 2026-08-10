@@ -15,3 +15,6 @@ class GoalResponse(BaseModel):
 
     class Config:
         from_attributes = True
+        
+class ContributionRequest(BaseModel):
+    amount: float

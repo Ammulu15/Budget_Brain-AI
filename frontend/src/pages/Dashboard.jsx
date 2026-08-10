@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import StatCard from "../components/StatCard";
 import FoodDoodle from "../components/FoodDoodle";
 import MoodBuddy from "../components/MoodBuddy";
+import AiInsights from "../components/AiInsights";
 
 const COLORS = ["#7a1f4d", "#b0698f", "#4f8a86", "#1f3a44", "#e3b8c9", "#e8c4cb"];
 
@@ -20,14 +21,19 @@ function getDoodleType(category, type) {
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
+  const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ amount: "", type: "expense", category: "", description: "" });
+  const [form, setForm] = useState({ amount: "", type: "expense", category: "", description: "", goal_id: "" });
 
   const fetchTransactions = async () => {
     setLoading(true);
-    const res = await api.get("/transactions/");
-    setTransactions(res.data);
+    const [txRes, goalsRes] = await Promise.all([
+      api.get("/transactions/"),
+      api.get("/goals/"),
+    ]);
+    setTransactions(txRes.data);
+    setGoals(goalsRes.data);
     setLoading(false);
   };
 
@@ -54,8 +60,9 @@ export default function Dashboard() {
     await api.post("/transactions/", {
       ...form,
       amount: parseFloat(form.amount),
+      goal_id: form.goal_id ? parseInt(form.goal_id) : null,
     });
-    setForm({ amount: "", type: "expense", category: "", description: "" });
+    setForm({ amount: "", type: "expense", category: "", description: "", goal_id: "" });
     setShowForm(false);
     fetchTransactions();
   };
@@ -74,6 +81,8 @@ export default function Dashboard() {
         <div className="flex justify-center mb-8">
           <MoodBuddy income={income} expenses={expenses} />
         </div>
+
+        <AiInsights />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div
@@ -139,6 +148,20 @@ export default function Dashboard() {
                   <option value="expense">Expense</option>
                   <option value="income">Income</option>
                 </select>
+
+                {form.type === "income" && goals.length > 0 && (
+                  <select
+                    value={form.goal_id}
+                    onChange={(e) => setForm({ ...form, goal_id: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-white/80 border border-blush text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-mauve"
+                  >
+                    <option value="">Not linked to a goal</option>
+                    {goals.map((g) => (
+                      <option key={g.id} value={g.id}>Put toward: {g.title}</option>
+                    ))}
+                  </select>
+                )}
+
                 <input
                   type="text"
                   placeholder="Category (e.g. Groceries)"

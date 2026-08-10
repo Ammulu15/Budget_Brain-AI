@@ -11,6 +11,8 @@ class TransactionCreate(BaseModel):
     type: TransactionType
     category: str
     description: str | None = None
+    goal_id: int | None = None
+    save_amount: float | None = None
 
 class TransactionResponse(BaseModel):
     id: int
@@ -19,6 +21,7 @@ class TransactionResponse(BaseModel):
     category: str
     description: str | None = None
     transaction_date: datetime
+    goal_id: int | None = None
 
     class Config:
         from_attributes = True

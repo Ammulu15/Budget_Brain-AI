@@ -13,7 +13,8 @@ class Transaction(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-
+    goal_id = Column(Integer, ForeignKey("goals.id"), nullable=True)
+    
     amount = Column(Float, nullable=False)
     type = Column(Enum(TransactionType), nullable=False)
     category = Column(String, nullable=False)

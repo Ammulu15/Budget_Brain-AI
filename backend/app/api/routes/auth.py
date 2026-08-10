@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.user import User
-from app.schemas.user import UserCreate, UserResponse, Token
-from app.core.security import hash_password, verify_password, create_access_token,get_current_user
+from app.schemas.user import UserCreate, UserResponse, Token, Token, ForgotPasswordRequest, ResetPasswordRequest
+from app.core.security import hash_password, verify_password, create_access_token,get_current_user, create_reset_token, verify_reset_token
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -37,3 +37,28 @@ def login(user_data: UserCreate, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserResponse)
 def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user
+@router.post("/forgot-password")
+def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user:
+        # Same response either way — don't reveal whether the email exists
+        return {"message": "If that email exists, a reset link has been generated."}
+
+    token = create_reset_token(user.email)
+    # In production, this token would be emailed as a link, not returned directly.
+    return {"message": "Reset token generated.", "reset_token": token}
+
+
+@router.post("/reset-password")
+def reset_password(request: ResetPasswordRequest, db: Session = Depends(get_db)):
+    email = verify_reset_token(request.token)
+    if not email:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.hashed_password = hash_password(request.new_password)
+    db.commit()
+    return {"message": "Password reset successful"}

@@ -4,8 +4,19 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recha
 import api from "../api/axios";
 import Navbar from "../components/Navbar";
 import StatCard from "../components/StatCard";
+import FoodDoodle from "../components/FoodDoodle";
+import MoodBuddy from "../components/MoodBuddy";
 
-const COLORS = ["#a855f7", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#ec4899"];
+const COLORS = ["#7a1f4d", "#b0698f", "#4f8a86", "#1f3a44", "#e3b8c9", "#e8c4cb"];
+
+function getDoodleType(category, type) {
+  const c = category.toLowerCase();
+  if (c.includes("pizza") || c.includes("food") || c.includes("restaurant")) return "pizza";
+  if (c.includes("burger")) return "burger";
+  if (c.includes("coffee") || c.includes("cafe")) return "coffee";
+  if (type === "income") return "savings";
+  return "shopping";
+}
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
@@ -50,23 +61,27 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-blush-light via-blush to-mauve/30">
       <Navbar />
 
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <StatCard label="Total Income" value={income} gradient="from-emerald-500 to-teal-500" />
-          <StatCard label="Total Expenses" value={expenses} gradient="from-rose-500 to-red-500" />
-          <StatCard label="Net Savings" value={savings} gradient="from-purple-500 to-blue-500" />
+          <StatCard label="Total Income" value={income} gradient="from-teal-deep to-teal-deep/70" emoji="💰" />
+          <StatCard label="Total Expenses" value={expenses} gradient="from-wine to-mauve" emoji="🛍️" />
+          <StatCard label="Net Savings" value={savings} gradient="from-navy-deep to-teal-deep" emoji="🐷" />
+        </div>
+
+        <div className="flex justify-center mb-8">
+          <MoodBuddy income={income} expenses={expenses} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10"
+            className="bg-white/70 backdrop-blur-lg rounded-3xl p-6 border border-blush shadow-md"
           >
-            <h2 className="text-white font-semibold mb-4">Spending by Category</h2>
+            <h2 className="text-slate-700 font-semibold mb-4">Spending by Category 🎀</h2>
             {categoryData.length === 0 ? (
               <p className="text-slate-400 text-sm">No expenses yet</p>
             ) : (
@@ -87,15 +102,15 @@ export default function Dashboard() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10"
+            className="bg-white/70 backdrop-blur-lg rounded-3xl p-6 border border-blush shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-semibold">Recent Transactions</h2>
+              <h2 className="text-slate-700 font-semibold">Recent Transactions ✨</h2>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowForm(!showForm)}
-                className="text-sm px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 text-white"
+                className="text-sm px-3 py-1.5 rounded-full bg-gradient-to-r from-wine to-mauve text-white font-medium shadow-sm"
               >
                 + Add
               </motion.button>
@@ -114,15 +129,15 @@ export default function Dashboard() {
                   required
                   value={form.amount}
                   onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white text-sm placeholder-slate-400"
+                  className="w-full px-3 py-2 rounded-xl bg-white/80 border border-blush text-slate-700 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-mauve"
                 />
                 <select
                   value={form.type}
                   onChange={(e) => setForm({ ...form, type: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white text-sm"
+                  className="w-full px-3 py-2 rounded-xl bg-white/80 border border-blush text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-mauve"
                 >
-                  <option value="expense" className="text-black">Expense</option>
-                  <option value="income" className="text-black">Income</option>
+                  <option value="expense">Expense</option>
+                  <option value="income">Income</option>
                 </select>
                 <input
                   type="text"
@@ -130,20 +145,20 @@ export default function Dashboard() {
                   required
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white text-sm placeholder-slate-400"
+                  className="w-full px-3 py-2 rounded-xl bg-white/80 border border-blush text-slate-700 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-mauve"
                 />
                 <input
                   type="text"
                   placeholder="Description (optional)"
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white text-sm placeholder-slate-400"
+                  className="w-full px-3 py-2 rounded-xl bg-white/80 border border-blush text-slate-700 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-mauve"
                 />
                 <button
                   type="submit"
-                  className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-medium"
+                  className="w-full py-2 rounded-xl bg-gradient-to-r from-wine to-mauve text-white text-sm font-medium shadow-sm"
                 >
-                  Save Transaction
+                  Save Transaction 🌸
                 </button>
               </motion.form>
             )}
@@ -157,13 +172,16 @@ export default function Dashboard() {
                 {transactions.slice().reverse().map((t) => (
                   <div
                     key={t.id}
-                    className="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3"
+                    className="flex items-center justify-between bg-blush-light/60 rounded-2xl px-4 py-3"
                   >
-                    <div>
-                      <p className="text-white text-sm font-medium">{t.category}</p>
-                      <p className="text-slate-400 text-xs">{t.description || "—"}</p>
+                    <div className="flex items-center gap-3">
+                      <FoodDoodle type={getDoodleType(t.category, t.type)} size={32} />
+                      <div>
+                        <p className="text-slate-700 text-sm font-medium">{t.category}</p>
+                        <p className="text-slate-400 text-xs">{t.description || "—"}</p>
+                      </div>
                     </div>
-                    <p className={`font-semibold ${t.type === "income" ? "text-emerald-400" : "text-rose-400"}`}>
+                    <p className={`font-semibold ${t.type === "income" ? "text-teal-deep" : "text-wine"}`}>
                       {t.type === "income" ? "+" : "-"}₹{t.amount.toLocaleString()}
                     </p>
                   </div>

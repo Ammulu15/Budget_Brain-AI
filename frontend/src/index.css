@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --color-teal-deep: #4f8a86;
+  --color-navy-deep: #1f3a44;
+  --color-wine: #7a1f4d;
+  --color-mauve: #b0698f;
+  --color-blush: #e3b8c9;
+  --color-blush-light: #e8c4cb;
+}

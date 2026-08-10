@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 
+const floatingStickers = ["🍰", "✨", "🎀", "💫", "🧁", "🌸"];
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,39 +28,56 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-navy-deep via-wine to-navy-deep flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Floating decorative stickers */}
+      {floatingStickers.map((emoji, i) => (
+        <motion.span
+          key={i}
+          className="absolute text-3xl select-none pointer-events-none opacity-80"
+          style={{
+            left: `${10 + i * 15}%`,
+            top: `${10 + (i % 3) * 25}%`,
+          }}
+          animate={{ y: [0, -15, 0], rotate: [0, 8, -8, 0] }}
+          transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {emoji}
+        </motion.span>
+      ))}
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20"
+        className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-mauve/30 relative z-10"
       >
         <div className="text-center mb-8">
+          <div className="text-4xl mb-2">🌷</div>
           <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
-          <p className="text-slate-300">Log in to BudgetBrain AI</p>
+          <p className="text-blush">Log in to BudgetBrain AI</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="text-sm text-slate-300 mb-1 block">Email</label>
+            <label className="text-sm text-blush mb-1 block">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+              className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-mauve/40 text-white placeholder-blush/50 focus:outline-none focus:ring-2 focus:ring-teal-deep transition"
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="text-sm text-slate-300 mb-1 block">Password</label>
+            <label className="text-sm text-blush mb-1 block">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+              className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-mauve/40 text-white placeholder-blush/50 focus:outline-none focus:ring-2 focus:ring-teal-deep transition"
               placeholder="••••••••"
             />
           </div>
@@ -67,26 +86,26 @@ export default function Login() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-red-400 text-sm"
+              className="text-rose-300 text-sm"
             >
               {error}
             </motion.p>
           )}
 
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold shadow-lg hover:shadow-purple-500/50 transition disabled:opacity-50"
+            className="w-full py-3 rounded-2xl bg-gradient-to-r from-teal-deep to-mauve text-white font-semibold shadow-md hover:shadow-lg transition disabled:opacity-50"
           >
-            {loading ? "Logging in..." : "Log In"}
+            {loading ? "Logging in... 🌸" : "Log In ✨"}
           </motion.button>
         </form>
 
-        <p className="text-center text-slate-400 text-sm mt-6">
+        <p className="text-center text-blush/80 text-sm mt-6">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-purple-400 hover:text-purple-300 font-medium">
+          <Link to="/signup" className="text-teal-deep hover:text-mauve font-medium">
             Sign up
           </Link>
         </p>

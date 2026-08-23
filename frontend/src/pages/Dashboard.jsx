@@ -25,6 +25,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ amount: "", type: "expense", category: "", description: "", goal_id: "" });
+  const [saveAmount, setSaveAmount] = useState("");
 
   const fetchTransactions = async () => {
     setLoading(true);
@@ -61,8 +62,10 @@ export default function Dashboard() {
       ...form,
       amount: parseFloat(form.amount),
       goal_id: form.goal_id ? parseInt(form.goal_id) : null,
+      save_amount: form.goal_id && saveAmount ? parseFloat(saveAmount) : null,
     });
     setForm({ amount: "", type: "expense", category: "", description: "", goal_id: "" });
+    setSaveAmount("");
     setShowForm(false);
     fetchTransactions();
   };
@@ -150,16 +153,72 @@ export default function Dashboard() {
                 </select>
 
                 {form.type === "income" && goals.length > 0 && (
-                  <select
-                    value={form.goal_id}
-                    onChange={(e) => setForm({ ...form, goal_id: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-white/80 border border-blush text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-mauve"
-                  >
-                    <option value="">Not linked to a goal</option>
-                    {goals.map((g) => (
-                      <option key={g.id} value={g.id}>Put toward: {g.title}</option>
-                    ))}
-                  </select>
+                  <>
+                    <select
+                      value={form.goal_id}
+                      onChange={(e) => {
+                        setForm({ ...form, goal_id: e.target.value });
+                        setSaveAmount("");
+                      }}
+                      className="w-full px-3 py-2 rounded-xl bg-white/80 border border-blush text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-mauve"
+                    >
+                      <option value="">Not linked to a goal</option>
+                      {goals.map((g) => (
+                        <option key={g.id} value={g.id}>Put toward: {g.title}</option>
+                      ))}
+                    </select>
+
+                    {form.goal_id && (
+                      <div className="p-3 rounded-xl bg-mauve/5 border border-mauve/20 space-y-2">
+                        <p className="text-xs text-slate-500">How much of this income goes toward the goal?</p>
+                        <div className="flex gap-2 flex-wrap">
+                          {[100, 500, 1000].map((preset) => {
+                            const tooMuch = form.amount && preset > parseFloat(form.amount);
+                            return (
+                              <button
+                                type="button"
+                                key={preset}
+                                disabled={tooMuch}
+                                onClick={() => setSaveAmount(String(preset))}
+                                className={`px-3 py-1.5 rounded-full text-sm font-medium transition disabled:opacity-30 disabled:cursor-not-allowed ${
+                                  saveAmount === String(preset)
+                                    ? "bg-gradient-to-r from-wine to-mauve text-white"
+                                    : "bg-white border border-blush text-slate-600"
+                                }`}
+                              >
+                                ₹{preset}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <input
+                          type="number"
+                          placeholder="Or enter a custom amount"
+                          value={saveAmount}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (form.amount && parseFloat(val) > parseFloat(form.amount)) {
+                              setSaveAmount(form.amount);
+                            } else {
+                              setSaveAmount(val);
+                            }
+                          }}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-blush text-slate-700 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-mauve"
+                        />
+
+                        {form.amount && saveAmount && (
+                          <div className="mt-1 p-2 rounded-lg bg-white/80">
+                            <p className="text-xs text-slate-600">
+                              🎯 <strong>₹{parseFloat(saveAmount).toLocaleString()}</strong> goes toward your goal
+                            </p>
+                            <p className="text-xs text-slate-600 mt-1">
+                              💰 <strong>₹{(parseFloat(form.amount) - parseFloat(saveAmount)).toLocaleString()}</strong> stays as regular savings
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
                 )}
 
                 <input

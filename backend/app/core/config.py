@@ -8,5 +8,7 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
     groq_api_key: str
+    smtp_email: str
+    smtp_password: str
 
 settings = Settings()

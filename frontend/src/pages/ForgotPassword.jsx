@@ -5,7 +5,7 @@ import api from "../api/axios";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [resetToken, setResetToken] = useState(null);
+  const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,8 +14,8 @@ export default function ForgotPassword() {
     setError("");
     setLoading(true);
     try {
-      const res = await api.post("/auth/forgot-password", { email });
-      setResetToken(res.data.reset_token || null);
+      await api.post("/auth/forgot-password", { email });
+      setSent(true);
     } catch (err) {
       setError("Something went wrong. Try again.");
     } finally {
@@ -33,10 +33,10 @@ export default function ForgotPassword() {
         <div className="text-center mb-8">
           <div className="text-4xl mb-2">🔑</div>
           <h1 className="text-2xl font-bold text-white mb-2">Forgot your password?</h1>
-          <p className="text-blush text-sm">Enter your email and we'll help you reset it</p>
+          <p className="text-blush text-sm">Enter your email and we'll send you a reset link</p>
         </div>
 
-        {!resetToken ? (
+        {!sent ? (
           <form onSubmit={handleSubmit} className="space-y-5">
             <input
               type="email"
@@ -58,17 +58,9 @@ export default function ForgotPassword() {
             </motion.button>
           </form>
         ) : (
-          <div className="text-center space-y-4">
-            <p className="text-blush text-sm">
-              In a live app, this link would be emailed to you. For this demo, here it is directly:
-            </p>
-            <Link
-              to={`/reset-password?token=${resetToken}`}
-              className="block px-4 py-3 rounded-2xl bg-white/10 border border-mauve/40 text-teal-deep text-sm break-all hover:bg-white/20 transition"
-            >
-              Click here to reset your password
-            </Link>
-          </div>
+          <p className="text-blush text-center text-sm">
+            📬 If that email is registered, a reset link has been sent — check your inbox (and spam folder).
+          </p>
         )}
 
         <p className="text-center text-blush/80 text-sm mt-6">

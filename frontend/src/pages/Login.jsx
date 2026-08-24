@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 
-const floatingStickers = ["🍰", "✨", "🎀", "💫", "🧁", "🌸"];
+const floatingStickers = ["🪙", "✨", "🍔", "💫", "🍿", "🌟"];
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,12 +28,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-navy-deep via-wine to-navy-deep flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Floating decorative stickers */}
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Floating decorative Pixar stickers */}
       {floatingStickers.map((emoji, i) => (
         <motion.span
           key={i}
-          className="absolute text-3xl select-none pointer-events-none opacity-80"
+          className="absolute text-3xl select-none pointer-events-none opacity-60"
           style={{
             left: `${10 + i * 15}%`,
             top: `${10 + (i % 3) * 25}%`,
@@ -49,67 +49,75 @@ export default function Login() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-mauve/30 relative z-10"
+        className="w-full max-w-md glass-card rounded-3xl shadow-2xl p-8 relative z-10"
       >
         <div className="text-center mb-8">
-          <div className="text-4xl mb-2">🌷</div>
-          <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
-          <p className="text-blush">Log in to BudgetBrain AI</p>
+          <div className="text-4xl mb-2">🧠</div>
+          <h1 className="text-3xl font-black text-white mb-2 drop-shadow-md">Welcome Back</h1>
+          <p className="text-sky-200 text-sm font-medium">Log in to BudgetBrain AI</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="text-sm text-blush mb-1 block">Email</label>
+            <label className="text-sm font-semibold text-white/90 mb-1.5 block">Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-mauve/40 text-white placeholder-blush/50 focus:outline-none focus:ring-2 focus:ring-teal-deep transition"
+              className="w-full px-4 py-3 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#3ab5ff] transition"
+              style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="text-sm text-blush mb-1 block">Password</label>
+            <label className="text-sm font-semibold text-white/90 mb-1.5 block">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-mauve/40 text-white placeholder-blush/50 focus:outline-none focus:ring-2 focus:ring-teal-deep transition"
+              className="w-full px-4 py-3 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#3ab5ff] transition"
+              style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}
               placeholder="••••••••"
             />
           </div>
+
           <div className="text-right -mt-2">
-  <Link to="/forgot-password" className="text-sm text-teal-deep hover:text-mauve">
-    Forgot password?
-  </Link>
-</div>
+            <Link to="/forgot-password" className="text-sm font-semibold text-sky-300 hover:text-white transition">
+              Forgot password?
+            </Link>
+          </div>
+
           {error && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-rose-300 text-sm"
+              className="text-rose-300 text-sm font-semibold bg-rose-500/20 p-3 rounded-xl border border-rose-400/30"
             >
               {error}
             </motion.p>
           )}
 
           <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-2xl bg-gradient-to-r from-teal-deep to-mauve text-white font-semibold shadow-md hover:shadow-lg transition disabled:opacity-50"
+            className="w-full py-3 rounded-2xl font-bold text-white shadow-lg transition disabled:opacity-50"
+            style={{
+              background: "linear-gradient(135deg, #1e6fff, #3ab5ff)",
+              boxShadow: "0 4px 20px rgba(30,111,255,0.45)",
+            }}
           >
-            {loading ? "Logging in... 🌸" : "Log In ✨"}
+            {loading ? "Logging in... ✨" : "Log In ✨"}
           </motion.button>
         </form>
 
-        <p className="text-center text-blush/80 text-sm mt-6">
+        <p className="text-center text-sky-100 text-sm font-medium mt-6">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-teal-deep hover:text-mauve font-medium">
+          <Link to="/signup" className="text-sky-300 hover:text-white font-bold ml-1 transition">
             Sign up
           </Link>
         </p>

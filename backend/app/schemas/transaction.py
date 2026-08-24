@@ -13,6 +13,7 @@ class TransactionCreate(BaseModel):
     description: str | None = None
     goal_id: int | None = None
     save_amount: float | None = None
+    transaction_date: datetime | None = None
 
 class TransactionResponse(BaseModel):
     id: int

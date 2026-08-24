@@ -16,3 +16,14 @@ class Goal(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     owner = relationship("User", back_populates="goals")
+    contributions = relationship("GoalContribution", back_populates="goal", cascade="all, delete-orphan")
+
+class GoalContribution(Base):
+    __tablename__ = "goal_contributions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    goal_id = Column(Integer, ForeignKey("goals.id"), nullable=False)
+    amount = Column(Float, nullable=False)
+    contributed_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    goal = relationship("Goal", back_populates="contributions")

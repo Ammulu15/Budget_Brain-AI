@@ -24,57 +24,63 @@ export default function AiInsights() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="bg-white/70 backdrop-blur-lg rounded-3xl p-6 border border-blush shadow-md mb-8"
+      className="glass-card rounded-3xl p-6 h-full flex flex-col justify-between"
     >
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-slate-700 font-semibold flex items-center gap-2">
-          <span>🧠</span> AI Financial Assistant
-        </h2>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={fetchInsights}
-          disabled={loading}
-          className="text-sm px-4 py-1.5 rounded-full bg-gradient-to-r from-wine to-mauve text-white font-medium shadow-sm disabled:opacity-50"
-        >
-          {loading ? "Thinking... ✨" : insights ? "Refresh" : "Get Insights"}
-        </motion.button>
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-white font-bold text-base flex items-center gap-2">
+            <span className="text-xl">🧠</span> AI Financial Assistant
+          </h2>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={fetchInsights}
+            disabled={loading}
+            className="text-xs px-4 py-2 rounded-full font-bold text-white shadow-md disabled:opacity-50 transition"
+            style={{
+              background: "linear-gradient(135deg, #1e6fff, #b0698f)",
+              boxShadow: "0 2px 14px rgba(30,111,255,0.4)",
+            }}
+          >
+            {loading ? "Analyzing... ✨" : insights ? "Refresh Analysis" : "Get AI Insights ✨"}
+          </motion.button>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.p
+              key="error"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-rose-300 text-sm font-medium bg-rose-500/20 p-3 rounded-2xl border border-rose-400/30"
+            >
+              {error}
+            </motion.p>
+          )}
+
+          {!error && insights && (
+            <motion.div
+              key="insights"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-white/95 text-sm leading-relaxed whitespace-pre-line bg-white/10 p-4 rounded-2xl border border-white/20"
+            >
+              {insights}
+            </motion.div>
+          )}
+
+          {!error && !insights && !loading && (
+            <motion.p
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-sky-200/90 text-sm font-medium py-3"
+            >
+              Tap <span className="font-bold text-white">"Get AI Insights"</span> for personalized financial advice and smart savings breakdowns powered by Groq AI 💫
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
-
-      <AnimatePresence mode="wait">
-        {error && (
-          <motion.p
-            key="error"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-rose-500 text-sm"
-          >
-            {error}
-          </motion.p>
-        )}
-
-        {!error && insights && (
-          <motion.p
-            key="insights"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-slate-600 text-sm leading-relaxed whitespace-pre-line"
-          >
-            {insights}
-          </motion.p>
-        )}
-
-        {!error && !insights && !loading && (
-          <motion.p
-            key="empty"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-slate-400 text-sm"
-          >
-            Tap "Get Insights" for a personalized look at your spending 🌸
-          </motion.p>
-        )}
-      </AnimatePresence>
     </motion.div>
   );
 }

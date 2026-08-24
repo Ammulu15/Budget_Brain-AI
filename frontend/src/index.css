@@ -1,10 +1,66 @@
 @import "tailwindcss";
 
 @theme {
+  /* Original palette */
   --color-teal-deep: #4f8a86;
   --color-navy-deep: #1f3a44;
   --color-wine: #7a1f4d;
   --color-mauve: #b0698f;
   --color-blush: #e3b8c9;
-  --color-blush-light: #e8c4cb;
+  --color-blush-light: #f0d9e4;
+
+  /* Pixar Vibrant Blues */
+  --color-pixar-blue: #1e6fff;
+  --color-sky-bright: #3ab5ff;
+  --color-electric: #00cfff;
+  --color-deep-ocean: #0a2463;
+  --color-cornflower: #6a8fff;
+
+  /* Pixar Accent Pops */
+  --color-sunshine: #ffd23f;
+  --color-coral-pop: #ff6b6b;
+  --color-mint-fresh: #3de8c5;
 }
+
+/* Global Pixar Vibe Background */
+body {
+  background: linear-gradient(135deg, #0d1b3e 0%, #1a2a6c 20%, #4f8a86 50%, #b0698f 75%, #e3b8c9 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Glassmorphism base utility */
+.glass {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+/* Pixar shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-8px) rotate(1deg); }
+  66% { transform: translateY(-4px) rotate(-1deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(30, 111, 255, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(58, 181, 255, 0.7); }
+}
+
+.float-anim { animation: float-bob 4s ease-in-out infinite; }
+.glow-blue { animation: glow-pulse 2.5s ease-in-out infinite; }

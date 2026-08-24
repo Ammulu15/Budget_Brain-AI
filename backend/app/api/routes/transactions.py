@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.db.database import get_db
 from app.models.transaction import Transaction
-from app.models.goal import Goal
+from app.models.goal import Goal, GoalContribution
 from app.models.user import User
 from app.schemas.transaction import TransactionCreate, TransactionResponse
 from app.core.security import get_current_user
@@ -16,8 +16,9 @@ def create_transaction(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    data_dict = transaction_data.model_dump(exclude={"save_amount"}, exclude_none=True)
     new_transaction = Transaction(
-        **transaction_data.model_dump(exclude={"save_amount"}),
+        **data_dict,
         user_id=current_user.id
     )
     db.add(new_transaction)
@@ -29,6 +30,11 @@ def create_transaction(
         ).first()
         if goal:
             goal.saved_amount += transaction_data.save_amount
+            new_contribution = GoalContribution(
+                goal_id=goal.id,
+                amount=transaction_data.save_amount
+            )
+            db.add(new_contribution)
 
     db.commit()
     db.refresh(new_transaction)

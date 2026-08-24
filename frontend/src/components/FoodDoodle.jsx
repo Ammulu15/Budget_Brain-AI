@@ -1,74 +1,55 @@
 import { motion } from "framer-motion";
 
-// Cute kawaii-style icons with eyes, matched to the jewel-tone palette.
-// Usage: <FoodDoodle type="pizza" /> or "burger", "coffee", "shopping", "savings"
-
-const doodles = {
-  pizza: (
-    <svg viewBox="0 0 64 64" fill="none">
-      <path d="M32 8 L56 52 L8 52 Z" fill="#e8c4cb" stroke="#7a1f4d" strokeWidth="2" strokeLinejoin="round" />
-      <circle cx="26" cy="34" r="3" fill="#b0698f" />
-      <circle cx="38" cy="30" r="3" fill="#b0698f" />
-      <circle cx="32" cy="44" r="3" fill="#b0698f" />
-      {/* eyes */}
-      <circle cx="26" cy="20" r="2.5" fill="#1f3a44" />
-      <circle cx="38" cy="20" r="2.5" fill="#1f3a44" />
-      <path d="M28 26 Q32 29 36 26" stroke="#1f3a44" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-    </svg>
-  ),
-  burger: (
-    <svg viewBox="0 0 64 64" fill="none">
-      <path d="M10 26 Q10 14 32 14 Q54 14 54 26 Z" fill="#e3b8c9" stroke="#7a1f4d" strokeWidth="2" />
-      <rect x="10" y="27" width="44" height="6" rx="2" fill="#4f8a86" stroke="#1f3a44" strokeWidth="1.5" />
-      <rect x="10" y="35" width="44" height="7" rx="2" fill="#b0698f" stroke="#7a1f4d" strokeWidth="1.5" />
-      <path d="M10 44 Q10 52 32 52 Q54 52 54 44 Z" fill="#e8c4cb" stroke="#7a1f4d" strokeWidth="2" />
-      {/* eyes on the top bun */}
-      <circle cx="25" cy="19" r="2.2" fill="#1f3a44" />
-      <circle cx="39" cy="19" r="2.2" fill="#1f3a44" />
-      <path d="M27 23 Q32 25 37 23" stroke="#1f3a44" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-    </svg>
-  ),
-  coffee: (
-    <svg viewBox="0 0 64 64" fill="none">
-      <path d="M14 24 H44 V42 Q44 52 29 52 Q14 52 14 42 Z" fill="#4f8a86" stroke="#1f3a44" strokeWidth="2" />
-      <path d="M44 28 Q54 28 54 36 Q54 44 44 42" stroke="#1f3a44" strokeWidth="2" fill="none" />
-      <circle cx="24" cy="34" r="2.2" fill="#e3b8c9" />
-      <circle cx="34" cy="34" r="2.2" fill="#e3b8c9" />
-      <path d="M25 39 Q29 41 33 39" stroke="#e3b8c9" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-    </svg>
-  ),
-  shopping: (
-    <svg viewBox="0 0 64 64" fill="none">
-      <path d="M16 22 H48 L45 52 H19 Z" fill="#b0698f" stroke="#7a1f4d" strokeWidth="2" />
-      <path d="M24 22 V16 Q24 8 32 8 Q40 8 40 16 V22" stroke="#7a1f4d" strokeWidth="2" fill="none" />
-      <circle cx="27" cy="34" r="2.2" fill="#e8c4cb" />
-      <circle cx="37" cy="34" r="2.2" fill="#e8c4cb" />
-      <path d="M28 39 Q32 41 36 39" stroke="#e8c4cb" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-    </svg>
-  ),
-  savings: (
-    <svg viewBox="0 0 64 64" fill="none">
-      <ellipse cx="32" cy="36" rx="22" ry="16" fill="#e3b8c9" stroke="#7a1f4d" strokeWidth="2" />
-      <path d="M50 30 Q58 28 58 34 Q58 38 50 38" fill="#e3b8c9" stroke="#7a1f4d" strokeWidth="2" />
-      <circle cx="46" cy="20" r="6" fill="#e3b8c9" stroke="#7a1f4d" strokeWidth="2" />
-      <circle cx="26" cy="34" r="2.2" fill="#7a1f4d" />
-      <circle cx="36" cy="34" r="2.2" fill="#7a1f4d" />
-      <path d="M27 40 Q31 42 35 40" stroke="#7a1f4d" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <rect x="20" y="46" width="4" height="6" rx="1" fill="#7a1f4d" />
-      <rect x="40" y="46" width="4" height="6" rx="1" fill="#7a1f4d" />
-    </svg>
-  ),
+const characterImages = {
+  burger: "/characters/burger.jpg",
+  popcorn: "/characters/popcorn.jpg",
+  envelope: "/characters/envelope.jpg",
+  currency: "/characters/currency.jpg",
+  piggy: "/characters/piggy.jpg",
+  shopping: "/characters/shopping.jpg",
+  treat: "/characters/treat.jpg",
 };
 
-export default function FoodDoodle({ type = "shopping", size = 40 }) {
+export function getCharacterType(category = "", type = "expense") {
+  const c = category.toLowerCase();
+  if (c.includes("popcorn") || c.includes("movie") || c.includes("cinema") || c.includes("snack") || c.includes("entertainment") || c.includes("fun")) {
+    return "popcorn";
+  }
+  if (c.includes("burger") || c.includes("food") || c.includes("restaurant") || c.includes("cafe") || c.includes("coffee") || c.includes("pizza") || c.includes("dining") || c.includes("lunch") || c.includes("dinner")) {
+    return "burger";
+  }
+  if (c.includes("fee") || c.includes("bill") || c.includes("rent") || c.includes("electricity") || c.includes("water") || c.includes("wifi") || c.includes("recharge") || c.includes("subscription") || c.includes("tax")) {
+    return "envelope";
+  }
+  if (type === "income" || c.includes("salary") || c.includes("dividend") || c.includes("bonus") || c.includes("cash") || c.includes("freelance")) {
+    return "currency";
+  }
+  if (c.includes("saving") || c.includes("goal") || c.includes("invest") || c.includes("deposit")) {
+    return "piggy";
+  }
+  return "shopping";
+}
+
+export default function FoodDoodle({ type = "shopping", size = 42 }) {
+  const imgSrc = characterImages[type] || characterImages.shopping;
+
   return (
     <motion.div
-      whileHover={{ scale: 1.15, rotate: [0, -6, 6, 0] }}
-      transition={{ duration: 0.4 }}
+      whileHover={{ scale: 1.22, rotate: [-4, 4, 0], y: -3 }}
+      whileTap={{ scale: 0.92 }}
+      animate={{ y: [0, -2.5, 0] }}
+      transition={{
+        y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+        scale: { type: "spring", stiffness: 300, damping: 15 },
+      }}
       style={{ width: size, height: size }}
-      className="inline-block cursor-pointer"
+      className="inline-flex items-center justify-center shrink-0 cursor-pointer relative"
     >
-      {doodles[type] || doodles.shopping}
+      <img
+        src={imgSrc}
+        alt={type}
+        className="w-full h-full object-cover rounded-2xl shadow-sm border border-white/60 ring-1 ring-black/5 hover:shadow-md transition"
+      />
     </motion.div>
   );
 }

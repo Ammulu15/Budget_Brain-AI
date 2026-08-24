@@ -18,3 +18,12 @@ class GoalResponse(BaseModel):
         
 class ContributionRequest(BaseModel):
     amount: float
+
+class ContributionResponse(BaseModel):
+    id: int
+    goal_id: int
+    amount: float
+    contributed_at: datetime
+
+    class Config:
+        from_attributes = True

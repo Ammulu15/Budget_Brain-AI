@@ -10,7 +10,7 @@ app = FastAPI(title="BudgetBrain AI")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://10.91.51.140:5173"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

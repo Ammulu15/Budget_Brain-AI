@@ -32,6 +32,15 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigField(
+            "String",
+            "API_BASE_URL",
+            "\"${providers.gradleProperty(\"API_BASE_URL\").getOrElse(\"https://api.example.com\")}\""
+        )
     }
 }
 

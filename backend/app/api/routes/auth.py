@@ -5,6 +5,7 @@ from app.models.user import User
 from app.schemas.user import UserCreate, UserResponse, Token, ForgotPasswordRequest, ResetPasswordRequest
 from app.core.security import hash_password, verify_password, create_access_token, get_current_user, create_reset_token, verify_reset_token
 from app.core.email import send_reset_email
+from app.core.config import settings
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -49,7 +50,7 @@ def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db
         return {"message": "If that email exists, a reset link has been sent."}
 
     token = create_reset_token(user.email)
-    reset_link = f"http://localhost:5173/reset-password?token={token}"
+    reset_link = f"{settings.frontend_url.rstrip('/')}/reset-password?token={token}"
 
     send_reset_email(user.email, reset_link)
 

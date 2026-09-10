@@ -10,7 +10,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 object ApiClient {
-    private const val BASE_URL = "http://10.91.51.140:8000"
+    private val baseUrl = BuildConfig.API_BASE_URL.trimEnd('/')
     private val client = OkHttpClient()
 
     fun sendTransaction(context: Context, transaction: ParsedTransaction) {
@@ -28,7 +28,7 @@ object ApiClient {
 
         val body = json.toString().toRequestBody("application/json".toMediaType())
         val request = Request.Builder()
-            .url("$BASE_URL/transactions/")
+            .url("$baseUrl/transactions/")
             .addHeader("Authorization", "Bearer $token")
             .post(body)
             .build()
@@ -53,7 +53,7 @@ object ApiClient {
 
         val body = json.toString().toRequestBody("application/json".toMediaType())
         val request = Request.Builder()
-            .url("$BASE_URL/auth/login")
+            .url("$baseUrl/auth/login")
             .post(body)
             .build()
 

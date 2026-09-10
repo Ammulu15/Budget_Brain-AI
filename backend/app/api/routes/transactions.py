@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app.db.database import get_db
 from app.models.transaction import Transaction
 from app.models.goal import Goal, GoalContribution
 from app.models.user import User
-from app.schemas.transaction import TransactionCreate, TransactionResponse
+from app.schemas.transaction import TransactionCreate, TransactionUpdate, TransactionResponse
 from app.core.security import get_current_user
 
 router = APIRouter(prefix="/transactions", tags=["Transactions"])
@@ -49,6 +49,30 @@ def list_transactions(
     return db.query(Transaction).filter(Transaction.user_id == current_user.id).all()
 
 
+@router.put("/{transaction_id}", response_model=TransactionResponse)
+def update_transaction(
+    transaction_id: int,
+    transaction_data: TransactionUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    transaction = db.query(Transaction).filter(
+        Transaction.id == transaction_id,
+        Transaction.user_id == current_user.id
+    ).first()
+
+    if not transaction:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+
+    update_data = transaction_data.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(transaction, key, value)
+
+    db.commit()
+    db.refresh(transaction)
+    return transaction
+
+
 @router.delete("/{transaction_id}")
 def delete_transaction(
     transaction_id: int,
@@ -61,7 +85,7 @@ def delete_transaction(
     ).first()
 
     if not transaction:
-        return {"detail": "Transaction not found"}
+        raise HTTPException(status_code=404, detail="Transaction not found")
 
     db.delete(transaction)
     db.commit()

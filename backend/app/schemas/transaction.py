@@ -15,6 +15,13 @@ class TransactionCreate(BaseModel):
     save_amount: float | None = None
     transaction_date: datetime | None = None
 
+class TransactionUpdate(BaseModel):
+    amount: float | None = None
+    type: TransactionType | None = None
+    category: str | None = None
+    description: str | None = None
+    transaction_date: datetime | None = None
+
 class TransactionResponse(BaseModel):
     id: int
     amount: float

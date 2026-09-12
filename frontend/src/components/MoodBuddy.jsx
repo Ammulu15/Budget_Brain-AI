@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Sparkles, Heart, AlertTriangle, AlertCircle, TrendingUp } from "lucide-react";
 
 function getMood(income, expenses) {
   if (income === 0 && expenses === 0) {
     return {
       mood: "neutral",
       text: "Add some transactions to get started!",
-      emoji: "🌱",
+      icon: Sparkles,
+      iconColor: "text-sky-300",
       mouthType: "neutral",
       blushOpacity: 0.4,
       earAngle: 0,
@@ -17,8 +19,9 @@ function getMood(income, expenses) {
   if (savingsRatio >= 0.3) {
     return {
       mood: "excited",
-      text: "Amazing savings! You're crushing your goals! ✨",
-      emoji: "🌟",
+      text: "Amazing savings! You're crushing your goals!",
+      icon: TrendingUp,
+      iconColor: "text-emerald-400",
       mouthType: "excited",
       blushOpacity: 0.85,
       earAngle: -6,
@@ -29,7 +32,8 @@ function getMood(income, expenses) {
     return {
       mood: "happy",
       text: "Looking good! Keep growing your savings!",
-      emoji: "💖",
+      icon: Heart,
+      iconColor: "text-rose-400",
       mouthType: "happy",
       blushOpacity: 0.7,
       earAngle: 0,
@@ -40,7 +44,8 @@ function getMood(income, expenses) {
     return {
       mood: "worried",
       text: "Careful, expenses are catching up to income",
-      emoji: "⚠️",
+      icon: AlertTriangle,
+      iconColor: "text-amber-400",
       mouthType: "worried",
       blushOpacity: 0.3,
       earAngle: 8,
@@ -50,7 +55,8 @@ function getMood(income, expenses) {
   return {
     mood: "sad",
     text: "Expenses have overtaken income this month!",
-    emoji: "🚨",
+    icon: AlertCircle,
+    iconColor: "text-rose-400",
     mouthType: "sad",
     blushOpacity: 0.1,
     earAngle: 14,
@@ -338,9 +344,14 @@ export default function MoodBuddy({ income, expenses }) {
           </svg>
 
           {/* Floating Status Indicator Badge */}
-          <span className="absolute bottom-1 right-2 text-base bg-white/95 rounded-full px-1.5 py-0.5 shadow-md border border-blush/60">
-            {currentMood.emoji}
-          </span>
+          {(() => {
+            const MoodIcon = currentMood.icon;
+            return (
+              <span className={`absolute bottom-1 right-2 p-1.5 bg-slate-900/90 rounded-full shadow-md border border-white/40 ${currentMood.iconColor}`}>
+                <MoodIcon className="w-3.5 h-3.5" />
+              </span>
+            );
+          })()}
         </motion.div>
       </div>
 

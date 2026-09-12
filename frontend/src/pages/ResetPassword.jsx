@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ShieldCheck } from "lucide-react";
 import api from "../api/axios";
 
 export default function ResetPassword() {
@@ -35,7 +36,9 @@ export default function ResetPassword() {
         className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-mauve/30"
       >
         <div className="text-center mb-8">
-          <div className="text-4xl mb-2">🌸</div>
+          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300">
+            <ShieldCheck className="w-7 h-7" />
+          </div>
           <h1 className="text-2xl font-bold text-white mb-2">Reset your password</h1>
         </div>
 

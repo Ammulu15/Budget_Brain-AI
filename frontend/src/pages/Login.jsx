@@ -1,9 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
-const floatingStickers = ["🪙", "✨", "🍔", "💫", "🍿", "🌟"];
+const floatingMascots = [
+  "/characters/cart.png",
+  "/characters/burger.png",
+  "/characters/currency.png",
+  "/characters/popcorn.png",
+  "/characters/piggy.png",
+  "/characters/coffee.png",
+];
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -29,20 +37,20 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Floating decorative Pixar stickers */}
-      {floatingStickers.map((emoji, i) => (
-        <motion.span
+      {/* Floating decorative 3D mascots */}
+      {floatingMascots.map((src, i) => (
+        <motion.div
           key={i}
-          className="absolute text-3xl select-none pointer-events-none opacity-60"
+          className="absolute w-14 h-14 select-none pointer-events-none opacity-40 hover:opacity-80 transition"
           style={{
-            left: `${10 + i * 15}%`,
-            top: `${10 + (i % 3) * 25}%`,
+            left: `${8 + i * 16}%`,
+            top: `${12 + (i % 3) * 26}%`,
           }}
-          animate={{ y: [0, -15, 0], rotate: [0, 8, -8, 0] }}
+          animate={{ y: [0, -18, 0], rotate: [0, 8, -8, 0] }}
           transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut" }}
         >
-          {emoji}
-        </motion.span>
+          <img src={src} alt="mascot" className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]" />
+        </motion.div>
       ))}
 
       <motion.div
@@ -52,7 +60,9 @@ export default function Login() {
         className="w-full max-w-md glass-card rounded-3xl shadow-2xl p-8 relative z-10"
       >
         <div className="text-center mb-8">
-          <div className="text-4xl mb-2">🧠</div>
+          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300">
+            <Sparkles className="w-8 h-8" />
+          </div>
           <h1 className="text-3xl font-black text-white mb-2 drop-shadow-md">Welcome Back</h1>
           <p className="text-sky-200 text-sm font-medium">Log in to BudgetBrain AI</p>
         </div>
@@ -111,7 +121,7 @@ export default function Login() {
               boxShadow: "0 4px 20px rgba(30,111,255,0.45)",
             }}
           >
-            {loading ? "Logging in... ✨" : "Log In ✨"}
+            {loading ? "Logging in..." : "Log In"}
           </motion.button>
         </form>
 

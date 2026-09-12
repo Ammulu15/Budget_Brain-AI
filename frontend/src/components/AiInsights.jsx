@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import api from "../api/axios";
 
 export default function AiInsights() {
@@ -29,20 +30,21 @@ export default function AiInsights() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-white font-bold text-base flex items-center gap-2">
-            <span className="text-xl">🧠</span> AI Financial Assistant
+            <Sparkles className="w-5 h-5 text-sky-400" /> AI Financial Assistant
           </h2>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={fetchInsights}
             disabled={loading}
-            className="text-xs px-4 py-2 rounded-full font-bold text-white shadow-md disabled:opacity-50 transition"
+            className="text-xs px-4 py-2 rounded-full font-bold text-white shadow-md disabled:opacity-50 transition flex items-center gap-1.5"
             style={{
               background: "linear-gradient(135deg, #1e6fff, #b0698f)",
               boxShadow: "0 2px 14px rgba(30,111,255,0.4)",
             }}
           >
-            {loading ? "Analyzing... ✨" : insights ? "Refresh Analysis" : "Get AI Insights ✨"}
+            <Sparkles className="w-3.5 h-3.5" />
+            {loading ? "Analyzing..." : insights ? "Refresh Analysis" : "Get AI Insights"}
           </motion.button>
         </div>
 
@@ -76,7 +78,7 @@ export default function AiInsights() {
               animate={{ opacity: 1 }}
               className="text-sky-200/90 text-sm font-medium py-3"
             >
-              Tap <span className="font-bold text-white">"Get AI Insights"</span> for personalized financial advice and smart savings breakdowns powered by Groq AI 💫
+              Tap <span className="font-bold text-white">"Get AI Insights"</span> for personalized financial advice and smart savings breakdowns powered by AI.
             </motion.p>
           )}
         </AnimatePresence>

@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
+import { LayoutDashboard, Target, Award, Sparkles } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const links = [
-  { to: "/dashboard", label: "Dashboard", emoji: "🏠" },
-  { to: "/budgets", label: "Budgets", emoji: "🎯" },
-  { to: "/goals", label: "Goals", emoji: "🌟" },
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/budgets", label: "Budgets", icon: Target },
+  { to: "/goals", label: "Goals", icon: Award },
 ];
 
 export default function Navbar() {
@@ -39,12 +40,13 @@ export default function Navbar() {
           filter: "drop-shadow(0 0 12px rgba(58,181,255,0.5))",
         }}
       >
-        <motion.span
+        <motion.div
           animate={{ rotate: [0, -8, 8, 0] }}
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          className="p-1 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-300"
         >
-          🧠
-        </motion.span>
+          <Sparkles className="w-5 h-5" />
+        </motion.div>
         BudgetBrain AI
       </motion.h1>
 
@@ -52,12 +54,13 @@ export default function Navbar() {
       <div className="flex items-center gap-2">
         {links.map((link) => {
           const isActive = location.pathname === link.to;
+          const IconComponent = link.icon;
           return (
             <Link key={link.to} to={link.to}>
               <motion.span
                 whileHover={{ scale: 1.07, y: -1 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 rounded-2xl text-sm font-semibold flex items-center gap-1.5 transition-all"
+                className="px-4 py-2 rounded-2xl text-sm font-semibold flex items-center gap-2 transition-all"
                 style={
                   isActive
                     ? {
@@ -71,7 +74,7 @@ export default function Navbar() {
                       }
                 }
               >
-                <span>{link.emoji}</span> {link.label}
+                <IconComponent className="w-4 h-4" /> {link.label}
               </motion.span>
             </Link>
           );

@@ -1,6 +1,20 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  Sparkles,
+  Clock,
+  Pencil,
+  Trash2,
+  Layers,
+  ShoppingCart,
+  TrendingUp,
+  Columns3,
+  PieChart as PieChartIcon,
+  Plus,
+  X,
+  Heart,
+} from "lucide-react";
 import api from "../api/axios";
 import Navbar from "../components/Navbar";
 import StatCard from "../components/StatCard";
@@ -169,8 +183,8 @@ export default function Dashboard() {
           <div className="flex items-center gap-2 text-xs mt-0.5">
             {t.description && <span className="text-sky-100 font-medium">{t.description}</span>}
             {t.description && <span className="text-slate-400">•</span>}
-            <span className="text-sky-300 font-semibold bg-sky-950/70 px-2 py-0.5 rounded-md border border-sky-400/30">
-              ⏰ {formatDateTime(t.transaction_date)}
+            <span className="text-sky-300 font-semibold bg-sky-950/70 px-2 py-0.5 rounded-md border border-sky-400/30 flex items-center gap-1">
+              <Clock className="w-3 h-3 text-sky-300" /> {formatDateTime(t.transaction_date)}
             </span>
           </div>
         </div>
@@ -187,16 +201,16 @@ export default function Dashboard() {
           <button
             title="Edit Transaction Entry"
             onClick={() => handleEditInit(t)}
-            className="p-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/40 text-sky-200 border border-sky-400/40 text-xs font-bold transition"
+            className="p-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/40 text-sky-200 border border-sky-400/40 text-xs font-bold transition flex items-center gap-1"
           >
-            ✏️ Edit
+            <Pencil className="w-3 h-3" /> Edit
           </button>
           <button
             title="Delete Entry"
             onClick={() => handleDelete(t.id)}
-            className="p-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-400/40 text-xs font-bold transition"
+            className="p-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-400/40 text-xs font-bold transition flex items-center justify-center"
           >
-            🗑️
+            <Trash2 className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
@@ -240,10 +254,10 @@ export default function Dashboard() {
               filter: "drop-shadow(0 0 30px rgba(58,181,255,0.5))",
             }}
           >
-            Your Financial Universe 🌌
+            Your Financial Universe <Sparkles className="w-8 h-8 inline text-amber-300 ml-1 mb-1 animate-pulse" />
           </motion.h1>
           <p className="text-base font-bold text-sky-100 drop-shadow">
-            Smart budgeting · Pixar magic ✨
+            Smart budgeting · Pixar 3D mascots
           </p>
         </motion.div>
 
@@ -253,7 +267,7 @@ export default function Dashboard() {
             label="Total Income"
             value={income}
             gradient="from-[#1e6fff] via-[#3ab5ff] to-[#00cfff]"
-            image="/characters/currency.jpg"
+            image="/characters/currency.png"
             active={filterType === "income"}
             onClick={() => setFilterType(filterType === "income" ? "all" : "income")}
           />
@@ -261,7 +275,7 @@ export default function Dashboard() {
             label="Total Expenses"
             value={expenses}
             gradient="from-[#7a1f4d] via-[#ff6b6b] to-[#b0698f]"
-            image="/characters/burger.jpg"
+            image="/characters/burger.png"
             active={filterType === "expense"}
             onClick={() => setFilterType(filterType === "expense" ? "all" : "expense")}
           />
@@ -269,14 +283,14 @@ export default function Dashboard() {
             label="Saved in Goals"
             value={allocatedToGoals}
             gradient="from-[#0a2463] via-[#6a8fff] to-[#3ab5ff]"
-            image="/characters/popcorn.jpg"
+            image="/characters/popcorn.png"
             onClick={() => setFilterType("all")}
           />
           <StatCard
             label="Net Savings"
             value={netSavings}
             gradient="from-[#3de8c5] via-[#4f8a86] to-[#1e6fff]"
-            image="/characters/piggy.jpg"
+            image="/characters/piggy.png"
             active={filterType === "all"}
             onClick={() => setFilterType("all")}
           />
@@ -289,8 +303,8 @@ export default function Dashboard() {
             animate={{ opacity: 1, x: 0 }}
             className="glass-card rounded-3xl p-6 flex flex-col items-center justify-center flex-shrink-0 w-full md:w-60"
           >
-            <p className="text-xs font-black uppercase tracking-widest mb-4 text-sky-300 drop-shadow">
-              💙 Mood Buddy
+            <p className="text-xs font-black uppercase tracking-widest mb-4 text-sky-300 drop-shadow flex items-center justify-center gap-1.5">
+              <Heart className="w-3.5 h-3.5 text-sky-400 fill-sky-400" /> Mood Buddy
             </p>
             <MoodBuddy income={income} expenses={expenses + allocatedToGoals} />
           </motion.div>
@@ -304,40 +318,52 @@ export default function Dashboard() {
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-black uppercase tracking-widest px-2 text-white/90">View:</span>
             {[
-              { key: "all", label: `All (${transactions.length})`, icon: "🌐" },
-              { key: "expense", label: `Expenses (${expenseList.length})`, icon: "🛍️" },
-              { key: "income", label: `Income (${incomeList.length})`, icon: "💰" },
-              { key: "split", label: "Split View", icon: "⚖️" },
-            ].map((tab) => (
-              <motion.button
-                key={tab.key}
-                whileHover={{ scale: 1.06, y: -1 }}
-                whileTap={{ scale: 0.96 }}
-                onClick={() => setFilterType(tab.key)}
-                className="px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 transition-all"
-                style={
-                  filterType === tab.key
-                    ? { background: "linear-gradient(135deg, #1e6fff, #3ab5ff)", color: "#fff", boxShadow: "0 2px 16px rgba(30,111,255,0.55)" }
-                    : { background: "rgba(10, 25, 60, 0.7)", color: "#e2e8f0", border: "1px solid rgba(255,255,255,0.2)" }
-                }
-              >
-                <span>{tab.icon}</span> {tab.label}
-              </motion.button>
-            ))}
+              { key: "all", label: `All (${transactions.length})`, icon: Layers },
+              { key: "expense", label: `Expenses (${expenseList.length})`, icon: ShoppingCart },
+              { key: "income", label: `Income (${incomeList.length})`, icon: TrendingUp },
+              { key: "split", label: "Split View", icon: Columns3 },
+            ].map((tab) => {
+              const IconComp = tab.icon;
+              return (
+                <motion.button
+                  key={tab.key}
+                  whileHover={{ scale: 1.06, y: -1 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setFilterType(tab.key)}
+                  className="px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all"
+                  style={
+                    filterType === tab.key
+                      ? { background: "linear-gradient(135deg, #1e6fff, #3ab5ff)", color: "#fff", boxShadow: "0 2px 16px rgba(30,111,255,0.55)" }
+                      : { background: "rgba(10, 25, 60, 0.7)", color: "#e2e8f0", border: "1px solid rgba(255,255,255,0.2)" }
+                  }
+                >
+                  <IconComp className="w-3.5 h-3.5" />
+                  <span>{tab.label}</span>
+                </motion.button>
+              );
+            })}
           </div>
 
           <motion.button
             whileHover={{ scale: 1.07, y: -1 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleOpenAddForm}
-            className="text-xs px-5 py-2 rounded-full font-black text-white shadow-lg"
+            className="text-xs px-5 py-2 rounded-full font-black text-white shadow-lg flex items-center gap-1.5"
             style={
               showForm
                 ? { background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.3)" }
                 : { background: "linear-gradient(135deg, #b0698f, #7a1f4d)", boxShadow: "0 4px 20px rgba(176,105,143,0.55)" }
             }
           >
-            {showForm ? "✕ Close" : "+ Add Transaction"}
+            {showForm ? (
+              <>
+                <X className="w-3.5 h-3.5" /> Close
+              </>
+            ) : (
+              <>
+                <Plus className="w-3.5 h-3.5" /> Add Transaction
+              </>
+            )}
           </motion.button>
         </div>
 
@@ -352,7 +378,7 @@ export default function Dashboard() {
           >
             <div className="flex items-center justify-between">
               <h3 className="font-black text-white flex items-center gap-2 text-base">
-                <span className="text-xl">{editingId ? "✏️" : "💫"}</span>
+                {editingId ? <Pencil className="w-5 h-5 text-amber-300" /> : <Sparkles className="w-5 h-5 text-sky-300" />}
                 {editingId ? "Edit Transaction Entry (Fix Mistake)" : "New Transaction Entry"}
               </h3>
               {editingId && (
@@ -387,8 +413,8 @@ export default function Dashboard() {
                   onChange={(e) => setForm({ ...form, type: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-slate-900/90 border border-sky-400/40 focus:outline-none focus:ring-2 focus:ring-sky-400"
                 >
-                  <option value="expense" style={{ background: "#0a192f" }}>Expense 🛍️</option>
-                  <option value="income" style={{ background: "#0a192f" }}>Income 💰</option>
+                  <option value="expense" style={{ background: "#0a192f" }}>Expense</option>
+                  <option value="income" style={{ background: "#0a192f" }}>Income</option>
                 </select>
               </div>
 
@@ -457,12 +483,49 @@ export default function Dashboard() {
                 <label className="block text-xs font-bold text-sky-200 mb-1">Category</label>
                 <input
                   type="text"
-                  placeholder="Category (e.g. Groceries, Salary)"
+                  list="category-suggestions"
+                  placeholder="Category (e.g. Drinks, Food, Groceries)"
                   required
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-slate-900/90 border border-sky-400/40 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400"
                 />
+                <datalist id="category-suggestions">
+                  <option value="Food & Dining" />
+                  <option value="Drinks & Beverages" />
+                  <option value="Coffee & Cafe" />
+                  <option value="Groceries" />
+                  <option value="Shopping" />
+                  <option value="Entertainment" />
+                  <option value="Travel & Transport" />
+                  <option value="Bills & Utilities" />
+                  <option value="Salary" />
+                  <option value="Investments" />
+                </datalist>
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {[
+                    { label: "Drinks", cat: "Drinks & Beverages" },
+                    { label: "Food", cat: "Food & Dining" },
+                    { label: "Coffee", cat: "Coffee & Cafe" },
+                    { label: "Groceries", cat: "Groceries" },
+                    { label: "Shopping", cat: "Shopping" },
+                    { label: "Fun", cat: "Entertainment" },
+                  ].map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => setForm({ ...form, category: item.cat })}
+                      className={`text-[11px] px-2 py-0.5 rounded-full border transition flex items-center gap-1 font-semibold ${
+                        form.category === item.cat
+                          ? "bg-sky-500/40 text-white border-sky-400"
+                          : "bg-white/10 hover:bg-white/20 text-sky-200 border-white/10"
+                      }`}
+                    >
+                      <FoodDoodle type={getCharacterType(item.cat)} size={16} />
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div>
@@ -482,7 +545,7 @@ export default function Dashboard() {
               className="w-full py-3 rounded-2xl font-black text-sm text-white shadow-lg transition hover:scale-[1.01]"
               style={{ background: "linear-gradient(135deg, #1e6fff, #b0698f)", boxShadow: "0 4px 28px rgba(30,111,255,0.45)" }}
             >
-              {editingId ? "Update Transaction Entry ✨" : "Save Transaction Entry ✨"}
+              {editingId ? "Update Transaction Entry" : "Save Transaction Entry"}
             </button>
           </motion.form>
         )}
@@ -494,7 +557,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between mb-4 pb-3"
                 style={{ borderBottom: "1px solid rgba(58,181,255,0.2)" }}>
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">💰</span>
+                  <TrendingUp className="w-5 h-5 text-emerald-400" />
                   <h2 className="font-black text-white">Income Stream</h2>
                 </div>
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
@@ -510,7 +573,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between mb-4 pb-3"
                 style={{ borderBottom: "1px solid rgba(176,105,143,0.25)" }}>
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">🛍️</span>
+                  <ShoppingCart className="w-5 h-5 text-rose-400" />
                   <h2 className="font-black text-white">Expenses Stream</h2>
                 </div>
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-400/30">
@@ -528,10 +591,10 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card rounded-3xl p-6">
               <h2 className="font-black text-white mb-5 flex items-center gap-2">
-                <span>🎨</span> Spending by Category
+                <PieChartIcon className="w-5 h-5 text-sky-400" /> Spending by Category
               </h2>
               {categoryData.length === 0
-                ? <p className="text-sky-200/70 text-sm py-6 text-center font-medium">No expenses yet — start tracking! 🌱</p>
+                ? <p className="text-sky-200/70 text-sm py-6 text-center font-medium">No expenses yet — start tracking!</p>
                 : (
                   <ResponsiveContainer width="100%" height={250}>
                     <PieChart>
@@ -557,7 +620,13 @@ export default function Dashboard() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card rounded-3xl p-6">
               <div className="flex items-center gap-2 mb-5">
                 <h2 className="font-black text-white flex items-center gap-2">
-                  <span>{filterType === "expense" ? "🛍️" : filterType === "income" ? "💰" : "✨"}</span>
+                  {filterType === "expense" ? (
+                    <ShoppingCart className="w-5 h-5 text-rose-400" />
+                  ) : filterType === "income" ? (
+                    <TrendingUp className="w-5 h-5 text-emerald-400" />
+                  ) : (
+                    <Sparkles className="w-5 h-5 text-sky-300" />
+                  )}
                   {filterType === "expense" ? "Expenses" : filterType === "income" ? "Income" : "Recent Transactions"}
                 </h2>
                 <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30">
@@ -567,7 +636,7 @@ export default function Dashboard() {
               {loading
                 ? <p className="text-sky-200 text-sm font-medium">Loading...</p>
                 : displayedTransactions.length === 0
-                  ? <p className="text-sky-200/70 text-sm py-6 text-center font-medium">No transactions to show yet ✨</p>
+                  ? <p className="text-sky-200/70 text-sm py-6 text-center font-medium">No transactions to show yet</p>
                   : <div className="space-y-2 max-h-80 overflow-y-auto pr-1">{displayedTransactions.slice().reverse().map(renderTransactionItem)}</div>}
             </motion.div>
           </div>

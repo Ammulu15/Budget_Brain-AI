@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { KeyRound, MailCheck } from "lucide-react";
 import api from "../api/axios";
 
 export default function ForgotPassword() {
@@ -37,7 +38,9 @@ export default function ForgotPassword() {
         style={{ background: "rgba(10, 25, 60, 0.9)" }}
       >
         <div className="text-center mb-8">
-          <div className="text-4xl mb-2">🔑</div>
+          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300">
+            <KeyRound className="w-7 h-7" />
+          </div>
           <h1 className="text-2xl font-black text-white mb-2">Forgot Your Password?</h1>
           <p className="text-sky-200 text-sm font-medium">Enter your registered email to receive a password reset link</p>
         </div>
@@ -72,13 +75,14 @@ export default function ForgotPassword() {
               className="w-full py-3 rounded-2xl font-bold text-white shadow-lg disabled:opacity-50 transition"
               style={{ background: "linear-gradient(135deg, #1e6fff, #3ab5ff)" }}
             >
-              {loading ? "Sending... ✨" : "Send Reset Link ✨"}
+              {loading ? "Sending..." : "Send Reset Link"}
             </motion.button>
           </form>
         ) : (
           <div className="space-y-4 text-center">
-            <p className="text-emerald-300 font-bold text-sm bg-emerald-500/20 p-3 rounded-xl border border-emerald-400/30">
-              📬 If that email is registered, a reset link has been created!
+            <p className="text-emerald-300 font-bold text-sm bg-emerald-500/20 p-3 rounded-xl border border-emerald-400/30 flex items-center justify-center gap-2">
+              <MailCheck className="w-5 h-5 text-emerald-300 shrink-0" />
+              <span>If that email is registered, a reset link has been created!</span>
             </p>
             {resetLink && (
               <div className="p-3 bg-sky-950/80 rounded-xl border border-sky-400/40 text-left">

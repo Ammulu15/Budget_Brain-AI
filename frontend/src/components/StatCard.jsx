@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function StatCard({ label, value, gradient, emoji, image, onClick, active, characterStyle }) {
+export default function StatCard({ label, value, gradient, icon: Icon, image, onClick, active }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.92 }}
@@ -41,42 +41,40 @@ export default function StatCard({ label, value, gradient, emoji, image, onClick
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="absolute bottom-3 left-5 text-[9px] font-bold text-white/90 uppercase tracking-widest bg-white/25 px-2 py-0.5 rounded-full border border-white/30"
+            className="absolute bottom-3 left-5 text-[9px] font-bold text-white/90 uppercase tracking-widest bg-white/25 px-2.5 py-0.5 rounded-full border border-white/30"
           >
             ● Active
           </motion.span>
         )}
       </div>
 
-      {/* 3D Character — floats ABOVE the card, no box/frame */}
+      {/* 3D Character Mascot — seamlessly floats ABOVE the card with no box/frame */}
       {image && (
         <motion.div
-          className="absolute -top-10 -right-3 z-30 pointer-events-none"
-          animate={{ y: [0, -7, 0], rotate: [0, 2, -2, 0] }}
+          className="absolute -top-12 -right-4 z-30 pointer-events-none"
+          animate={{ y: [0, -8, 0], rotate: [0, 2, -2, 0] }}
           transition={{
             y: { duration: 3.5, repeat: Infinity, ease: "easeInOut" },
             rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
           }}
-          style={{ filter: "drop-shadow(0 12px 24px rgba(0,0,0,0.35))" }}
+          style={{ filter: "drop-shadow(0 14px 24px rgba(0,0,0,0.4))" }}
         >
           <img
             src={image}
             alt={label}
-            className="w-24 h-24 object-contain"
-            style={{ mixBlendMode: "normal" }}
+            className="w-28 h-28 object-contain select-none"
           />
         </motion.div>
       )}
 
-      {!image && emoji && (
-        <motion.span
-          className="absolute -top-6 -right-1 text-5xl z-30 pointer-events-none"
+      {!image && Icon && (
+        <motion.div
+          className="absolute -top-4 -right-2 p-3.5 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 shadow-xl z-30 pointer-events-none text-white"
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          style={{ filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.3))" }}
         >
-          {emoji}
-        </motion.span>
+          <Icon className="w-8 h-8" />
+        </motion.div>
       )}
     </motion.div>
   );

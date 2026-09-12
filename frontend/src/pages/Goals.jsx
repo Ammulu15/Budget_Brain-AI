@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Award, Plus, X, Sparkles, Target, Trophy, History } from "lucide-react";
 import api from "../api/axios";
 import Navbar from "../components/Navbar";
 
@@ -65,8 +66,8 @@ export default function Goals() {
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-black text-white flex items-center gap-2 drop-shadow-md">
-              <span>🌟</span> Savings Goals
+            <h1 className="text-3xl font-black text-white flex items-center gap-3 drop-shadow-md">
+              <Award className="w-8 h-8 text-sky-400" /> Savings Goals
             </h1>
             <p className="text-sky-200 text-sm font-medium mt-1">Track and conquer your long-term milestones</p>
           </div>
@@ -74,13 +75,21 @@ export default function Goals() {
             whileHover={{ scale: 1.05, y: -1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowForm(!showForm)}
-            className="px-5 py-2.5 rounded-full font-bold text-white text-sm shadow-lg transition"
+            className="px-5 py-2.5 rounded-full font-bold text-white text-sm shadow-lg transition flex items-center gap-1.5"
             style={{
               background: "linear-gradient(135deg, #1e6fff, #3ab5ff)",
               boxShadow: "0 4px 20px rgba(30,111,255,0.4)",
             }}
           >
-            {showForm ? "✕ Close" : "+ New Goal"}
+            {showForm ? (
+              <>
+                <X className="w-4 h-4" /> Close
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4" /> New Goal
+              </>
+            )}
           </motion.button>
         </div>
 
@@ -92,7 +101,7 @@ export default function Goals() {
             className="glass-card rounded-3xl p-6 mb-8 space-y-4"
           >
             <h3 className="text-white font-bold text-base flex items-center gap-2">
-              <span>🎯</span> Create New Savings Goal
+              <Target className="w-5 h-5 text-sky-300" /> Create New Savings Goal
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <input
@@ -129,7 +138,7 @@ export default function Goals() {
                 boxShadow: "0 4px 20px rgba(30,111,255,0.4)",
               }}
             >
-              Save Goal 🌸
+              Save Goal
             </button>
           </motion.form>
         )}
@@ -138,7 +147,7 @@ export default function Goals() {
           <p className="text-sky-200 text-sm font-medium">Loading goals...</p>
         ) : goals.length === 0 ? (
           <div className="glass-card rounded-3xl p-8 text-center">
-            <p className="text-white text-base font-semibold">No goals created yet 🌟</p>
+            <p className="text-white text-base font-semibold">No goals created yet</p>
             <p className="text-sky-200 text-sm mt-1">Add your first target above to start building towards it!</p>
           </div>
         ) : (
@@ -155,9 +164,9 @@ export default function Goals() {
                   className="glass-card rounded-3xl p-5"
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <p className="text-white font-bold text-base flex items-center gap-1.5">
+                    <p className="text-white font-bold text-base flex items-center gap-2">
                       {g.title}
-                      {reached && <span className="text-lg">🎉</span>}
+                      {reached && <Trophy className="w-5 h-5 text-amber-300 inline" />}
                     </p>
                     <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold ${
                       reached ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/40" : "bg-sky-500/20 text-sky-200 border border-sky-400/30"
@@ -222,9 +231,13 @@ export default function Goals() {
                       </motion.button>
                       <button
                         onClick={() => toggleHistory(g.id)}
-                        className="text-xs text-sky-200 hover:text-white font-semibold flex items-center gap-1"
+                        className="text-xs text-sky-200 hover:text-white font-semibold flex items-center gap-1.5"
                       >
-                        {historyFor === g.id ? "Hide history" : "📜 History"}
+                        {historyFor === g.id ? "Hide history" : (
+                          <>
+                            <History className="w-3.5 h-3.5 text-sky-300" /> History
+                          </>
+                        )}
                       </button>
                     </div>
                   )}
